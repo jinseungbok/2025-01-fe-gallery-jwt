@@ -8,13 +8,12 @@ import { useAccountStore } from './stores/account';
 const route = useRoute();
 const account = useAccountStore();
 
-
 </script>
 
 <template>
-        <Header />
-        <router-view></router-view>
-        <Footer />
+    <Header />
+    <router-view></router-view>
+    <Footer />
 </template>
 
 <style scoped>

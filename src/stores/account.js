@@ -17,5 +17,5 @@ export const useAccountStore = defineStore("account", () => {
       state.isSigned = false;
     }
 
-    return { state, setChecked, setLoggedIn };
+    return { state };
 }, { persist: true });

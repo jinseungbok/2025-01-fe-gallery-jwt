@@ -1,7 +1,10 @@
 <script setup>
 import { getItems } from '@/services/itemService';
 import { onMounted, reactive } from 'vue';
+import { useGlobalErrorStore } from '@/stores/global-error';
 import Card from '@/components/Card.vue';
+
+const globalErrorStore = useGlobalErrorStore();
 
 const state = reactive({
   items: []
@@ -12,6 +15,7 @@ onMounted(async () => {
   if(res.status !== 200) { return; }
   console.log('res.data:', res.data);
   state.items = res.data;
+
 });
 
 /*
@@ -22,6 +26,7 @@ onMounted(async () => {
 
 <template>
   <div class="home">
+    <b-modal v-model="globalErrorStore.state.isShow" ok-only>{{ globalErrorStore.state.errorMessage }}</b-modal>
     <div class="album py-5 bg-light">
       <div class="container">
         <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-3 g-3">

@@ -29,7 +29,7 @@ const logoutAccount = async () => {
   if (res === undefined || res.status !== 200) {
     return;
   }
-  account.setLoggedIn(false);
+  account.logout();
   alert("로그아웃 되었습니다.");
 };
 </script>
@@ -45,7 +45,7 @@ const logoutAccount = async () => {
           <span :class="['blinking', { off: !isBlink }]">{{ name }}님 환영합니다.</span>
         </div>
         <div class="menus d-flex gap-3">
-          <template v-if="account.state.loggedIn">
+          <template v-if="account.state.isSigned">
             <a @click="logoutAccount">로그아웃</a>
             <router-link to="/orders">주문 내역</router-link>
             <router-link to="/cart">장바구니</router-link>

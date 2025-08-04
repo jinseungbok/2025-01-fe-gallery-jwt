@@ -6,7 +6,7 @@ import { useRouter, useRoute } from 'vue-router';
 
 const router = useRouter();
 
-const account = useAccountStore();
+const accountStore = useAccountStore();
 
 const props = defineProps({
     item: {
@@ -21,7 +21,7 @@ const props = defineProps({
 const computedItemDiscountPrice = computed(() => (props.item.price * ((100 - props.item.discountPer) * 0.01)).toLocaleString() + '원');
 
 const put = async () => {
-    if(!account.state.loggedIn) {
+    if(!accountStore.state.isSigned) {
     alert("로그인을 해주시길 바랍니다.");
     return;
     }
@@ -45,8 +45,10 @@ else if(confirm('장바구니에 상품을 담았습니다. 장바구니로 이�
 <template>
     <div class="card shadow-sm">
         <!-- 상품 사진 aria-label은 영역에 대한 설명 -->
-         <span class="img" :style="{backgroundImage: `url(/pic/item/${props.item.imgPath})`}" 
-                           :aria-label="`상품사진(${props.item.name})`"></span>                           
+        <router-view>
+            <span class="img" :style="{backgroundImage: `url(${baseUrl}/pic/item/${props.item.id}/${props.item.imgPath})`}" 
+            :aria-label="`상품사진(${props.item.name})`"></span>                           
+        </router-view>
          <div class="card-body">
             <p class="card-text">
                 <!-- 상품 이름 -->
@@ -57,8 +59,7 @@ else if(confirm('장바구니에 상품을 담았습니다. 장바구니로 이�
             <div class="d-flex justify-content-between align-items-center">
                 <button class="btn bg-black btn-primary btn-sm" @click="put" style="border: none;">장바구니 담기</button>
                 <!-- 상품 정가 (숫자 데이터에 3자리마라 쉼표 표기 >> 천단위 콤마) -->
-                <small class="price text-muted">{{ props.item.price.toLocaleString() }}원</small>
-                <!-- 상품 할인가 -->
+                <small class="price text-muted"> {{ props.item.price?.toLocaleString?.() ?? '-' }}원</small>                <!-- 상품 할인가 -->
                 <small class="real text-danger">{{ computedItemDiscountPrice }}</small>
             </div>
          </div>

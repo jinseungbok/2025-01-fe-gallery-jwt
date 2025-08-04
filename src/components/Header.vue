@@ -5,7 +5,7 @@ import { ref, onMounted, onUnmounted, computed } from 'vue';
 
 const account = useAccountStore(); // 먼저 선언
 
-const userName = computed(() => account.state.name || "사용자"); // 반응형으로 상태를 계속 바라봄
+const userName = computed(() => account.state.signedUser?.name || "사용자"); // 반응형으로 상태를 계속 바라봄
 
 const isBlink = ref(true);
 let intervalId;
@@ -14,6 +14,8 @@ onMounted(() => {
   intervalId = setInterval(() => {
     isBlink.value = !isBlink.value; // 1초마다 토글
   }, 1000);
+  console.log("✅ signedUser:", account.state.signedUser);
+
 });
 
 onUnmounted(() => {
@@ -47,7 +49,7 @@ const logoutAccount = async () => {
           <strong>Atelier Works</strong>
         </router-link>
         <div v-if="account.state.isSigned">
-          <span :class="['welcome-text', { dimmed: !isBlink }]">{{ userName }}님 환영합니다.</span>
+          <span :class="['welcome-text', { dimmed: !isBlink }]">{{ account.state.signedUser?.name }}님 환영합니다.</span>
         </div>
         <div class="menus d-flex gap-3">
           <template v-if="account.state.isSigned">

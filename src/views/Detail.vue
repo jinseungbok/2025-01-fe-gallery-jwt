@@ -52,7 +52,9 @@ onMounted(() => {
                 @swiper="onSwiper" 
                 @slide-change="onSlideChange">
             <swiper-slide v-for="(item, idx) in state.items" :virtualIndex="idx" :key="idx">
-                <img :src="`${baseUrl}/pic/item/${item.id}/${item.imgPath}`" :alt="`상품사진(${item.name})`" :aria-label="`상품사진(${item.name})`">
+                <img :src="`${baseUrl}/pic/${item.imgPath}`"
+                @error="(e) => e.target.src = '/default-image.jpg'"
+                :alt="`상품사진(${item.name})`" :aria-label="`상품사진(${item.name})`">
             </swiper-slide>
         </swiper>
     </div>

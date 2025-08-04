@@ -56,8 +56,9 @@ const put = async () => {
         <router-link to="/detail">
             <span
               class="img"
-              :style="{backgroundImage: `url(${baseUrl}/pic/item/${props.item.id}/${props.item.imgPath})`}" 
-              :aria-label="`상품사진(${props.item.name})`"></span>                           
+              :style="{ backgroundImage: `url(${baseUrl}/pic/${props.item.imgPath})` }"
+              @error="(e) => e.target.src = '/default-image.jpg'"
+              :aria-label="`상품사진(${props.item.name})`"></span>
             </router-link>
          <div class="card-body">
             <p class="card-text">

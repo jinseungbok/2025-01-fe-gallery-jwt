@@ -1,8 +1,8 @@
 <script setup>
 import { reactive, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { getItems } from '@/Services/cartService';
-import { addOrder } from '@/Services/orderService';
+import { getItems } from '@/services/cartService';
+import { addOrder } from '@/services/orderService';
 
 const router = useRouter();
 

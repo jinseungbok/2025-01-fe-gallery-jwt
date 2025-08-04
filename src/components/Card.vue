@@ -1,12 +1,13 @@
 <script setup>
-import { computed } from 'vue';
-import { addItem } from '../Services/cartService';
+import { ref, computed } from 'vue';
+import { addItem } from '@/services/cartService';
 import { useAccountStore } from "@/stores/account";
-import { useRouter, useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 
-const router = useRouter();
+const baseUrl = ref(import.meta.env.VITE_BASE_URL);
 
 const accountStore = useAccountStore();
+const router = useRouter();
 
 const props = defineProps({
     item: {
@@ -17,27 +18,34 @@ const props = defineProps({
         discountPer: Number
     }
 });
+
 //const computedItemDiscountPrice = computed(() => (props.item.price - (props.item.price * props.item.discountPer / 100)).toLocaleString() + '원');
-const computedItemDiscountPrice = computed(() => (props.item.price * ((100 - props.item.discountPer) * 0.01)).toLocaleString() + '원');
+const computedItemDiscountPrice = computed(() => {
+    const price = props.item?.price;
+    const discount = props.item?.discountPer;
+
+    if(typeof price !== 'number' || typeof discount !== 'number') {
+        return '-';
+    }
+
+    const discounted = price * ((100 - discount) / 100);
+    return discounted.toLocaleString() + '원';
+});
 
 const put = async () => {
     if(!accountStore.state.isSigned) {
-    alert("로그인을 해주시길 바랍니다.");
-    return;
+        alert("로그인을 해주시길 바랍니다.");
+        return;
     }
-const res = await addItem(props.item.id);
-    if(res === undefined || res.status !== 200) {
-    alert("이미 추가된 물품입니다.");
-    return;
-}
-else if(confirm('장바구니에 상품을 담았습니다. 장바구니로 이동하시겠습니까?')) {
-    router.push("/cart")
-} else {
+    const res = await addItem( props.item.id );
+    if(res.status === 200 && confirm("장바구니에 상품을 담았습니다. 장바구니로 이동하시겠습니까?")) {
+        // 장바구니 화면으로 라우팅
+        console.log("카드 담기 성공!");
+        router.push('/cart');
+    } else {
     alert("홈 화면으로 이동합니다.")
     router.push("/");
-}
-// 장바구니 화면으로 라우팅
-    console.log("카트 담기 성공!");
+    }
 }
 
 </script>
@@ -45,10 +53,12 @@ else if(confirm('장바구니에 상품을 담았습니다. 장바구니로 이�
 <template>
     <div class="card shadow-sm">
         <!-- 상품 사진 aria-label은 영역에 대한 설명 -->
-        <router-view>
-            <span class="img" :style="{backgroundImage: `url(${baseUrl}/pic/item/${props.item.id}/${props.item.imgPath})`}" 
-            :aria-label="`상품사진(${props.item.name})`"></span>                           
-        </router-view>
+        <router-link to="/detail">
+            <span
+              class="img"
+              :style="{backgroundImage: `url(${baseUrl}/pic/item/${props.item.id}/${props.item.imgPath})`}" 
+              :aria-label="`상품사진(${props.item.name})`"></span>                           
+            </router-link>
          <div class="card-body">
             <p class="card-text">
                 <!-- 상품 이름 -->

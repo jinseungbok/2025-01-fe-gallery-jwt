@@ -1,11 +1,11 @@
 <script setup>
 import { useAccountStore } from "@/stores/account";
-import { logout } from "@/Services/accountService";
+import { logout } from "@/services/accountService";
 import { ref, onMounted, onUnmounted, computed } from 'vue';
 
 const account = useAccountStore(); // 먼저 선언
 
-const name = computed( () => account.state.name || "사용자"); // 반응형으로 상태를 계속 바라봄
+const userName = computed(() => account.state.name || "사용자"); // 반응형으로 상태를 계속 바라봄
 
 const isBlink = ref(true);
 let intervalId;
@@ -22,15 +22,20 @@ onUnmounted(() => {
 
 // 로그아웃
 const logoutAccount = async () => {
-  if (!confirm("로그아웃 하시겠습니까?")) {
-    return;
+  if (!confirm("로그아웃 하시겠습니까?")) return;
+
+  try {
+    const res = await logout();
+    if (res?.status >= 200 && res?.status < 300) {
+      account.logout();
+      alert("로그아웃 되었습니다.");
+    } else {
+      alert("로그아웃 실패: 서버 오류");
+    }
+  } catch (err) {
+    console.error("로그아웃 중 오류 발생:", err);
+    alert("로그아웃 실패: 네트워크 오류");
   }
-  const res = await logout();
-  if (res === undefined || res.status !== 200) {
-    return;
-  }
-  account.logout();
-  alert("로그아웃 되었습니다.");
 };
 </script>
 
@@ -41,8 +46,8 @@ const logoutAccount = async () => {
         <router-link to="/" class="navbar-brand">
           <strong>Atelier Works</strong>
         </router-link>
-        <div>
-          <span :class="['blinking', { off: !isBlink }]">{{ name }}님 환영합니다.</span>
+        <div v-if="account.state.isSigned">
+          <span :class="['welcome-text', { dimmed: !isBlink }]">{{ userName }}님 환영합니다.</span>
         </div>
         <div class="menus d-flex gap-3">
           <template v-if="account.state.isSigned">
@@ -61,13 +66,14 @@ const logoutAccount = async () => {
 </template>
 
 <style lang="scss" scoped>
-.blinking {
+.welcome-text {
   color: gray;
-  transition: color 0.5s ease;
+  transition: opacity 0.5s ease;
+  opacity: 1;
 }
-.blinking.off {
-  color: transparent;
-  transition: color 0.5s ease;
+
+.welcome-text.dimmed {
+  opacity: 0;
 }
 
 strong {

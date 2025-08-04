@@ -1,7 +1,7 @@
 <script setup>
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
-import { join } from '@/Services/accountService';
+import { join } from '@/services/accountService';
 
 const router = useRouter();
 

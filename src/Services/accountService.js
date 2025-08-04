@@ -1,6 +1,5 @@
 import axios from './httpRequester';
 
-
 export const join = args => {
     return axios.post('/account/join', args).catch(e => e.response);
 }
@@ -14,5 +13,5 @@ export const logout = () => {
 }
 
 export const reissue = () => {
-  return axios.post('/account/reissue').catch(e => response);
+    return axios.post('/account/reissue').catch(e => e.response);
 }

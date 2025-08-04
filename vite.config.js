@@ -13,11 +13,11 @@ export default defineConfig({
   // server: {
   //   proxy: {
   //     '/pic': {
-  //       target: 'http://localhost:8989',
+  //       target: 'http://localhost:8080',
   //       changeOrigin: true
   //     },
   //     '/api': {
-  //       target: 'http://localhost:8989',
+  //       target: 'http://localhost:8080',
   //       changeOrigin: true
   //     }
   //   }

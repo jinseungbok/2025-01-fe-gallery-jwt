@@ -1,23 +1,23 @@
 <script setup>
-import { reactive } from "vue";
-import { useRouter } from "vue-router";
-import { join } from "@/Services/accountService";
+import { reactive } from 'vue';
+import { useRouter } from 'vue-router';
+import { join } from '@/services/accountService';
 
 const router = useRouter();
 
 const state = reactive({
   form: {
-    name: "",
-    loginId: "",
-    loginPw: "",
+    name: '',
+    loginId: '',
+    loginPw: '',
   },
 });
 const submit = async () => {
   const res = await join(state.form);
-  console.log("res:", res);
+  console.log('res:', res);
   if (res.status === 200) {
-    alert("회원가입을 축하합니다.");
-    await router.push("/");
+    alert('회원가입을 축하합니다.');
+    await router.push('/');
   }
 };
 </script>
@@ -33,8 +33,7 @@ const submit = async () => {
             class="form-control"
             id="name"
             placeholder="이름"
-            v-model="state.form.name"
-          />
+            v-model="state.form.name" />
           <label for="name">이름</label>
         </div>
         <div class="form-floating">
@@ -43,8 +42,7 @@ const submit = async () => {
             class="form-control"
             id="loginId"
             placeholder="이메일"
-            v-model="state.form.loginId"
-          />
+            v-model="state.form.loginId" />
           <label for="loginId">이메일</label>
         </div>
         <div class="form-floating">
@@ -54,11 +52,10 @@ const submit = async () => {
             id="loginPw"
             placeholder="패스워드"
             v-model="state.form.loginPw"
-            autocomplete="off"
-          />
+            autocomplete="off" />
           <label for="loginPw">패스워드</label>
         </div>
-        <button class="w-100 h6 btn py-3 bg-black btn-primary" style="border: none;">회원가입</button>
+        <button class="w-100 h6 btn py-3 btn-primary">회원가입</button>
       </form>
     </div>
   </div>

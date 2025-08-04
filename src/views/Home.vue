@@ -1,10 +1,10 @@
 <script setup>
-import { getItems } from '@/Services/itemService';
+import { getItems } from '@/services/itemService';
 import { onMounted, reactive } from 'vue';
 import Card from '@/components/Card.vue';
 
 const state = reactive({
-  items: [],
+  items: []
 });
 
 onMounted(async () => {
@@ -13,23 +13,27 @@ onMounted(async () => {
   console.log('res.data:', res.data);
   state.items = res.data;
 });
-  // const res = await getItems();
-  // console.log(res.data);
+
 /*
-마운트 될떄 따한번getItems 통신하고 데이터 콘솔에 뿌리기
+이 화면이 마운트될 때 딱 한번 getItems 통신하시고
+통신으로 받아온 데이터를 콘솔에 뿌려주시오.
 */
 </script>
+
 <template>
   <div class="home">
     <div class="album py-5 bg-light">
       <div class="container">
-        <div class="row row-cols-1 row-cols-lg row-cols-xl-3 g-3">
+        <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-3 g-3">
           <div class="col" v-for="item in state.items">
-            <card :item="item" />
+            <card :item="item"/>
           </div>
         </div>
       </div>
     </div>
   </div>
 </template>
-<style scoped></style>
+
+<style scoped>
+
+</style>

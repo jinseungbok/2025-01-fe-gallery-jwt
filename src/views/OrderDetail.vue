@@ -1,7 +1,9 @@
 <script setup>
-import { reactive, onMounted } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { getOrder } from '../Services/orderService';
+import { getOrder } from '@/services/orderService';
+
+const baseUrl = ref(import.meta.env.VITE_BASE_URL);
 
 const route = useRoute();
 
@@ -83,7 +85,7 @@ onMounted(async () => {
             <tbody>
               <tr v-for="(item, idx) in state.order.items" :key="item.id">
                 <td>{{ idx + 1 }}</td>
-                <td><img :src="`/pic/item/${item.imgPath}`" alt="테스트" /></td>
+                <td><img :src="`${baseUrl}/pic/item/${item.id}/${item.imgPath}`" alt="테스트" /></td>
                 <td>{{ item.name }}</td>
               </tr>
             </tbody>
@@ -96,17 +98,17 @@ onMounted(async () => {
 
 <style lang="scss" scoped>
 table img { width: 150px; }
-
 .order-detail {
-    > .container {
-        table {
-            th, td {
-                padding: 15px 25px;
-            }
-            th {
-                background: #f7f7f7;
-            }
-        }
+  > .container {
+    table {
+      th,
+      td {
+        padding: 15px 25px;
+      }
+      th {
+        background-color: #f7f7f7;
+      }
     }
+  }
 }
 </style>

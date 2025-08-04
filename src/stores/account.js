@@ -1,37 +1,21 @@
-import { reactive, computed } from "vue";
-import { defineStore } from "pinia";
-import { check } from "@/Services/accountService";
+import { reactive, computed } from 'vue'
+import { defineStore } from 'pinia'
 
 export const useAccountStore = defineStore("account", () => {
-  const state = reactive({
-    checked: false,
-    loggedIn: false,
-    name: "", // 사용자 이름
-  });
+    const state = reactive({
+        signedUser: null,
+        isSigned: false
+    });
 
-  const setChecked = (val) => (state.checked = val);
-  const setLoggedIn = (val) => (state.loggedIn = val);
-  const setName = (val) => (state.name = val);
-
-  // 서버에 로그인 상태 확인 요청
-  const checkLogin = async () => {
-    const res = await check();
-    if (res?.status === 200 && res.data?.name) {
-      state.checked = true;
-      state.loggedIn = true;
-      state.name = res.data.name;
-    } else {
-      state.checked = true;
-      state.loggedIn = false;
-      state.name = "";
+    const setSignedUser = val => {
+      state.signedUser = val;
+      state.isSigned = true;
     }
-  };
 
-  return {
-    state,
-    setChecked,
-    setLoggedIn,
-    setName,
-    checkLogin,
-  };
-});
+    const logout = () => {
+      state.signedUser = null;
+      state.isSigned = false;
+    }
+
+    return { state, setChecked, setLoggedIn };
+}, { persist: true });

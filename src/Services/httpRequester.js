@@ -22,8 +22,8 @@ axios.interceptors.response.use( res => res, async err => {
             }
         } else {
             const message = err.response.data?.message ? err.response.data?.message : err.response.data;
-
-            const globalErrorStore = useGlobalErrorStore();
+            
+            const globalErrorStore = useGlobalErrorStore();            
             globalErrorStore.setErrorMessage(message);
         }
     }    

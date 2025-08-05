@@ -7,20 +7,6 @@ import { login } from '@/services/accountService';
 const accountStore = useAccountStore();
 const router = useRouter();
 
-const handleLogin = async () => {
-  const res = await login({ loginId, loginPw });
-
-  if (res?.status >= 200 && res?.status < 300) {
-    // ✅ name 포함 여부 콘솔 확인
-    console.log('로그인 응답:', res.data);
-
-    // ✅ 여기서 name이 포함된 객체를 그대로 저장
-    account.setSigendUser(res.data);
-  } else {
-    alert('로그인 실패');
-  }
-};
-
 const state = reactive({
     form: {
         loginId: '',
